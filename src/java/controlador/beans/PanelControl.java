@@ -33,4 +33,7 @@ public class PanelControl extends Controller{
     public void redireccionarGestionarCliente(){
         super.redireccionarVista("gestionarCliente.xhtml");
     }
+    public void redireccionarGestionarPropietario(){
+        super.redireccionarVista("gestionarPropietario.xhtml");
+    }
 }

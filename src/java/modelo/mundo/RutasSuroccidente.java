@@ -475,14 +475,21 @@ public class RutasSuroccidente {
 	 */
 	public void eliminarPorpietarioVehiculo(int nIdentificacion) throws Exception
 	{
-            Propietario propietario = buscarPropietario(nIdentificacion);
-            if(propietario!=null)
-            {
-		//propietarioDAO.eliminarPorpietarioVehiculo(propietario);
-		propietarios.remove(propietario);
-            }
-            else{
-                throw new Exception("El propietario con identificacion: " + nIdentificacion + "no se encuentra registrado");
+            for(int i=0;i<marcas.size();i++){
+                Marca miMarca = marcas.get(i);
+                ArrayList<Linea> misLineas = miMarca.getLineas();
+                for(int j=0;j<misLineas.size();j++){
+                    Linea miLinea = misLineas.get(j);
+                    ArrayList<Vehiculo> misVehiculos = miLinea.getVehiculos();
+                    for(int k=0;k<misVehiculos.size();k++){
+                        Vehiculo miVehiculo = misVehiculos.get(k);
+                        Propietario miPropietario = miVehiculo.getPropietario();
+                        if(miPropietario.getIdentificacion()==nIdentificacion){
+                            miVehiculo.getPropietarioDAO().eliminar(miVehiculo, miPropietario);
+                            miVehiculo.setPropietario(null);
+                        }
+                    }
+                }
             }
 	}
 	
@@ -500,17 +507,25 @@ public class RutasSuroccidente {
 	 */
 	public void modificarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono) throws Exception
 	{
-		 Propietario propietario = buscarPropietario(nIdentificacion);
-            if(propietario != null)
-            {
-                propietario.setApellidos(nAplellidos);
-                propietario.setNombres(nNombres);
-                propietario.setDireccion(nDireccion);
-                propietario.setIdentificacion(nIdentificacion);
-                propietario.setTelefono(nTelefono);
+            for(int i=0;i<marcas.size();i++){
+                Marca miMarca = marcas.get(i);
+                ArrayList<Linea> misLineas = miMarca.getLineas();
+                for(int j=0;j<misLineas.size();j++){
+                    Linea miLinea = misLineas.get(j);
+                    ArrayList<Vehiculo> misVehiculos = miLinea.getVehiculos();
+                    for(int k=0;k<misVehiculos.size();k++){
+                        Vehiculo miVehiculo = misVehiculos.get(k);
+                        Propietario miPropietario = miVehiculo.getPropietario();
+                        if(miPropietario.getIdentificacion()==nIdentificacion){
+                            miPropietario.setApellidos(nAplellidos);
+                            miPropietario.setDireccion(nDireccion);
+                            miPropietario.setNombres(nNombres);
+                            miPropietario.setTelefono(nTelefono);
+                            miVehiculo.getPropietarioDAO().actualizar(miVehiculo, miPropietario);
+                        }
+                    }
+                }
             }
-            else
-                throw new Exception("No existe el propietario");
 	}
 	
 	
@@ -528,20 +543,25 @@ public class RutasSuroccidente {
 	 */
 	public void agregarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono, String nPlaca) throws Exception
 	{
-            Propietario propietario = buscarPropietario(nIdentificacion);
-            if(propietario == null)
-            {
-                if(buscarVehiculo(nPlaca) != null)
-                {
-                    propietario = new Propietario(nIdentificacion, nNombres, nAplellidos, nDireccion, nTelefono);
-                    //propietarioDAO.agregar(null, null, null, propietario);
-                    propietarios.add(propietario);
+            for(int i=0;i<marcas.size();i++){
+                Marca miMarca = marcas.get(i);
+                ArrayList<Linea> misLineas = miMarca.getLineas();
+                for(int j=0;j<misLineas.size();j++){
+                    Linea miLinea = misLineas.get(j);
+                    ArrayList<Vehiculo> misVehiculos = miLinea.getVehiculos();
+                    for(int k=0;k<misVehiculos.size();k++){
+                        Vehiculo miVehiculo = misVehiculos.get(k);
+                        if(miVehiculo.getPlaca().equals(nPlaca)){
+                            Propietario miPropietario = miVehiculo.getPropietario();
+                            if(miPropietario==null){
+                                Propietario p=new Propietario(nIdentificacion, nNombres, nAplellidos, nDireccion, nTelefono);
+                                miVehiculo.getPropietarioDAO().agregar(miVehiculo, p);
+                                miVehiculo.setPropietario(p);
+                            }
+                        }
+                    }
                 }
-                else
-                    throw new Exception("La placa no se encuentra registrada");
-            }
-            else
-                throw new Exception("El propietario con identificación: " + nIdentificacion + "ya se encuentra registrado");
+            }           
 	}
 	
 	
