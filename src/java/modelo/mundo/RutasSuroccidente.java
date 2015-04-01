@@ -473,7 +473,7 @@ public class RutasSuroccidente {
          * @param nIdentificacion la identificacion con la que se busca el propietario nIdentificacion!=null
 	 * @throws Exception - El cliente no existe.
 	 */
-	public void eliminarPorpietarioVehiculo(int nIdentificacion) throws Exception
+	public void eliminarPorpietarioVehiculo(int nIdentificacion)
 	{
             for(int i=0;i<marcas.size();i++){
                 Marca miMarca = marcas.get(i);
@@ -505,7 +505,7 @@ public class RutasSuroccidente {
 	 * @param nTelefono el telefono del propietario telefono>0
 	 * @throws Exception si no existe el propietario con la identificacion ingresada
 	 */
-	public void modificarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono) throws Exception
+	public void modificarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono)
 	{
             for(int i=0;i<marcas.size();i++){
                 Marca miMarca = marcas.get(i);
@@ -539,9 +539,8 @@ public class RutasSuroccidente {
 	 * @param nNombres los nombres del propietario nNombres!=""
 	 * @param nTelefono el telefono del propietario telefono>0
 	 * @param nPlaca la placa del vehiculo al cual se va a agregar el propuetario
-	 * @throws Exception La placa no se encuentra registrada - El propietario ya se encuentra registrado
 	 */
-	public void agregarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono, String nPlaca) throws Exception
+	public void agregarPropietario(String nAplellidos, String nDireccion, int nIdentificacion, String nNombres, int nTelefono, String nPlaca)
 	{
             for(int i=0;i<marcas.size();i++){
                 Marca miMarca = marcas.get(i);
