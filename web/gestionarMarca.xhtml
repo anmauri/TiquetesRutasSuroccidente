@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>GESTIONAR MARCA</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:outputLabel value="AGREGAR MARCA"/>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Nombre marca"/>
+                <h:inputText value="#{gestionarMarca.nombreMarcaAgregar}"/>
+                <h:commandButton value="Agregar marca" actionListener="#{gestionarMarca.agregar()}"/>
+            </h:panelGrid>
+            <h:panelGrid columns="1">
+                <h:outputLabel value="BUSCAR MARCA" />
+            </h:panelGrid>
+            <h:panelGrid columns="4">
+                <h:outputLabel value="Nombre marca"/>
+                <h:inputText value="#{gestionarMarca.nombreMarcaBuscar}"/>
+                <h:commandButton value="Buscar marca" actionListener="#{gestionarMarca.buscar()}"/>
+                <h:commandButton value="Eliminar Busqueda" actionListener="#{gestionarMarca.restablecerlista()}"/>
+            </h:panelGrid>
+            
+            <h:dataTable value="#{gestionarMarca.listaMarca}" var="marca">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Nombre Marca"/>
+                    </f:facet>
+                    <h:outputLabel value="#{marca.nombre}"/>
+                </h:column>  
+                <h:column>
+                    <h:commandButton value="Eliminar" actionListener="#{gestionarMarca.eliminar(marca)}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Modificar" action="#{gestionarMarca.redireccionarModificar(marca)}"/>
+                </h:column>
+            </h:dataTable>
+            <h:panelGrid columns="1">
+                <h:commandButton value="Panel Control" actionListener="#{gestionarMarca.irPanelControl()}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>

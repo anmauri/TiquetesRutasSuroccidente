@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>GESTIONAR CLIENTE</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:outputLabel value="AGREGAR CLIENTE"/>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Identificacion"/>
+                <h:inputText value="#{gestionarCliente.clienteAgregar.identificacion}"/>
+                <h:outputLabel value="Nombres"/>
+                <h:inputText value="#{gestionarCliente.clienteAgregar.nombres}"/>
+                <h:outputLabel value="Apellidos"/>
+                <h:inputText value="#{gestionarCliente.clienteAgregar.apellidos}"/>
+                <h:commandButton value="Agregar Cliente" actionListener="#{gestionarCliente.agregar()}"/>
+            </h:panelGrid>
+            <h:outputLabel value="BUSCAR CLIENTE"/>
+            <h:panelGrid columns="4">
+                <h:outputLabel value="Identificacion Cliente"/>
+                <h:inputText value="#{gestionarCliente.clienteBuscar.identificacion}"/>
+                <h:commandButton value="Buscar Cliente" actionListener="#{gestionarCliente.buscar()}"/>
+                <h:commandButton value="Eliminar Busqueda" actionListener="#{gestionarCliente.restablecerListaClientes()}"/>
+            </h:panelGrid>
+            <h:dataTable value="#{gestionarCliente.listaClientes}" var="cliente">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Identificacion"/>
+                    </f:facet>
+                    <h:outputLabel value="#{cliente.identificacion}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Nombres"/>
+                    </f:facet>
+                    <h:outputLabel value="#{cliente.nombres}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Apellidos"/>
+                    </f:facet>
+                    <h:outputLabel value="#{cliente.apellidos}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Eliminar" actionListener="#{gestionarCliente.eliminar(cliente)}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Modificar" action="#{gestionarCliente.redireccionarModificar(cliente)}"/>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton value="Panel Control" actionListener="#{gestionarCliente.irPanelControl()}"/>
+        </h:form>
+    </h:body>
+</html>

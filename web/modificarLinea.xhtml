@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Modificar Linea</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:outputLabel value="MODIFICAR LINEA"/>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Valor Actual"/>
+                <h:inputText value="#{gestionarLinea.viejoNombreLineaModificar}"/>
+            </h:panelGrid>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Nombre Linea"/>
+                <h:inputText value="#{gestionarLinea.nombreLineaModificar}"/>
+                <h:commandButton value="Modificar marca" actionListener="#{gestionarLinea.modificarLinea()}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
