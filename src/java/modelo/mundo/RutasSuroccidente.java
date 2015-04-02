@@ -1,7 +1,10 @@
 package modelo.mundo;
 
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.datos.ClienteDAO;
 import modelo.datos.MarcaDAO;
 
@@ -68,9 +71,14 @@ public class RutasSuroccidente {
 		marcas= new ArrayList<Marca>();
                 clientes= new ArrayList<Cliente>();
                 clienteDAO= new ClienteDAO();
+                //cargar();
 		// TODO Auto-generated constructor stub
 	}
 
+        
+        //----------------------------------------------------------------------
+        //GETTERS AND SETTERS
+        //----------------------------------------------------------------------
         
         /**
          * metofo que permite obterner el objeto para guardar una marca
@@ -148,6 +156,38 @@ public class RutasSuroccidente {
 	//REQUERIMIENTOS
 	//-------------------------------------------------------------------------------------------	
 	
+        
+        /**
+         * metodo que permite cargar el estado del mundo en la base de datos<br/>
+         * <b>post:</b> se ha cargado el estado del mundo de la base de datos
+         */
+        public void cargar(){
+            try {
+                clientes= clienteDAO.seleccionar();
+                marcas=marcaDAO.seleccionar();
+                for(int i=0; i<marcas.size();i++){
+                    Marca miMarca = marcas.get(i);
+                    ArrayList<Linea> Lineas = miMarca.getLineaDAO().seleccionar(miMarca);
+                    miMarca.setLineas(Lineas);
+                    ArrayList<Linea> misLineas = miMarca.getLineas();
+                    for(int j=0; j<misLineas.size(); j++){
+                        Linea miLinea = misLineas.get(j);
+                        ArrayList<Vehiculo> vehiculos = miLinea.getVehiculoDAO().seleccionar(miMarca, miLinea);
+                        miLinea.setVehiculos(vehiculos);
+                        ArrayList<Vehiculo> misVehiculos = miLinea.getVehiculos();
+                        for(int k=0; k<misVehiculos.size();k++){
+                            Vehiculo miVehiculo = misVehiculos.get(k);
+                            Propietario miPropietario = miVehiculo.getPropietarioDAO().seleccionar(miVehiculo);
+                            miVehiculo.setPropietario(miPropietario);
+                        }
+                    }
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(RutasSuroccidente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(RutasSuroccidente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 	//-------------------------------------------------------------------------------------------
 	//GESTIONAR MARCA
 	//-------------------------------------------------------------------------------------------
@@ -455,8 +495,10 @@ public class RutasSuroccidente {
                     for(int k=0;k<misVehiculos.size();k++){
                         Vehiculo miVehiculo = misVehiculos.get(k);
                         Propietario miPropietario = miVehiculo.getPropietario();
-                        if(miPropietario.getIdentificacion()==nIdentificacion){
-                            retorno= miPropietario;
+                        if(miPropietario!=null){
+                            if(miPropietario.getIdentificacion()==nIdentificacion){
+                                retorno= miPropietario;
+                            }
                         }
                     }
                 }
@@ -484,9 +526,11 @@ public class RutasSuroccidente {
                     for(int k=0;k<misVehiculos.size();k++){
                         Vehiculo miVehiculo = misVehiculos.get(k);
                         Propietario miPropietario = miVehiculo.getPropietario();
-                        if(miPropietario.getIdentificacion()==nIdentificacion){
-                            miVehiculo.getPropietarioDAO().eliminar(miVehiculo, miPropietario);
-                            miVehiculo.setPropietario(null);
+                        if(miPropietario!=null){
+                            if(miPropietario.getIdentificacion()==nIdentificacion){
+                                miVehiculo.getPropietarioDAO().eliminar(miVehiculo, miPropietario);
+                                miVehiculo.setPropietario(null);
+                            }   
                         }
                     }
                 }
@@ -516,12 +560,14 @@ public class RutasSuroccidente {
                     for(int k=0;k<misVehiculos.size();k++){
                         Vehiculo miVehiculo = misVehiculos.get(k);
                         Propietario miPropietario = miVehiculo.getPropietario();
-                        if(miPropietario.getIdentificacion()==nIdentificacion){
-                            miPropietario.setApellidos(nAplellidos);
-                            miPropietario.setDireccion(nDireccion);
-                            miPropietario.setNombres(nNombres);
-                            miPropietario.setTelefono(nTelefono);
-                            miVehiculo.getPropietarioDAO().actualizar(miVehiculo, miPropietario);
+                        if(miPropietario!=null){
+                            if(miPropietario.getIdentificacion()==nIdentificacion){
+                                miPropietario.setApellidos(nAplellidos);
+                                miPropietario.setDireccion(nDireccion);
+                                miPropietario.setNombres(nNombres);
+                                miPropietario.setTelefono(nTelefono);
+                                miVehiculo.getPropietarioDAO().actualizar(miVehiculo, miPropietario);
+                            }
                         }
                     }
                 }

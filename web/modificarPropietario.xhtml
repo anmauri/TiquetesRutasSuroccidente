@@ -7,6 +7,20 @@
     </h:head>
     <h:body>
         <h:form>
+            <h:outputLabel value="MODIFICAR PROPIETARIO"/>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Identificacion"/>
+                <h:inputText value="#{gestionarPropietario.propietarioModificar.identificacion}"/>
+                <h:outputLabel value="Apellidos"/>
+                <h:inputText value="#{gestionarPropietario.propietarioModificar.apellidos}"/>
+                <h:outputLabel value="Nombres"/>
+                <h:inputText value="#{gestionarPropietario.propietarioModificar.nombres}"/>
+                <h:outputLabel value="Direccion"/>
+                <h:inputText value="#{gestionarPropietario.propietarioModificar.direccion}"/>
+                <h:outputLabel value="Telefono"/>
+                <h:inputText value="#{gestionarPropietario.propietarioModificar.telefono}"/>
+                <h:commandButton value="Modificar Propietario" actionListener="#{gestionarPropietario.modificarPropietario()}"/>
+            </h:panelGrid>
         </h:form>
     </h:body>
 </html>

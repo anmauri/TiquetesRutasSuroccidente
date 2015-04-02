@@ -5,7 +5,7 @@ package modelo.mundo;
  * clase encargada del manejo de la informacion del propietario
  * @author MiPc
  * Universidad Mariana (Pasto - Colombia) 
- * Departamento de Ingeniería de Sistemas. 
+ * Departamento de Ingenierï¿½a de Sistemas. 
  */
 public class Propietario 
 {
@@ -51,7 +51,11 @@ public class Propietario
 	 */
 	public Propietario(int nIdentifacion, String nNombres, String nApellidos, String nDireccion, int nTelefono)
 	{
-		
+            identificacion= nIdentifacion;
+            nombres=nNombres;
+            apellidos=nApellidos;
+            direccion=nDireccion;
+            telefono=nTelefono;
 	}
 	
 	

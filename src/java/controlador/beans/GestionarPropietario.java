@@ -155,11 +155,11 @@ public class GestionarPropietario extends Controller{
         this.placaVehiculo = placaVehiculo;
     }
 
-    public static List<Vehiculo> getListaVehiculos() {
+    public List<Vehiculo> getListaVehiculos() {
         return listaVehiculos;
     }
 
-    public static void setListaVehiculos(List<Vehiculo> listaVehiculos) {
+    public void setListaVehiculos(List<Vehiculo> listaVehiculos) {
         GestionarPropietario.listaVehiculos = listaVehiculos;
     }
 

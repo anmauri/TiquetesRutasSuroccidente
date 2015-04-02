@@ -1,12 +1,77 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>GESTIONAR PROPIETARIO</title>
     </h:head>
     <h:body>
         <h:form>
+            <h:outputLabel value="AGREGAR PROPIETARIO"/>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Placa Vehiculo"/>
+                <h:selectOneMenu value="#{gestionarPropietario.placaVehiculo}">
+                    <f:selectItems value="#{gestionarPropietario.listaVehiculos}" var="vehiculo" itemValue="#{vehiculo.placa}" itemLabel="#{vehiculo.placa}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="Identificacion"/>
+                <h:inputText value="#{gestionarPropietario.propietarioAgregar.identificacion}"/>
+                <h:outputLabel value="Apellidos"/>
+                <h:inputText value="#{gestionarPropietario.propietarioAgregar.apellidos}"/>
+                <h:outputLabel value="Nombres"/>
+                <h:inputText value="#{gestionarPropietario.propietarioAgregar.nombres}"/>
+                <h:outputLabel value="Direccion"/>
+                <h:inputText value="#{gestionarPropietario.propietarioAgregar.direccion}"/>
+                <h:outputLabel value="Telefono"/>
+                <h:inputText value="#{gestionarPropietario.propietarioAgregar.telefono}"/>
+                <h:commandButton value="Agregar Propietario" actionListener="#{gestionarPropietario.agregar()}"/>
+            </h:panelGrid>
+            <h:outputLabel value="BUSCAR PROPIETARIO"/>
+            <h:panelGrid columns="4">
+                <h:outputLabel value="Identificacion Propietario"/>
+                <h:inputText value="#{gestionarPropietario.propietarioBuscar.identificacion}"/>
+                <h:commandButton value="Buscar Propietario" actionListener="#{gestionarPropietario.buscar()}"/>
+                <h:commandButton value="Eliminar Busqueda" actionListener="#{gestionarPropietario.restablecerListaPropietarios()}"/>
+            </h:panelGrid>
+            <h:dataTable value="#{gestionarPropietario.listaPropietarios}" var="propietario">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Identificacion"/>
+                    </f:facet>
+                    <h:outputLabel value="#{propietario.identificacion}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Apellidos"/>
+                    </f:facet>
+                    <h:outputLabel value="#{propietario.apellidos}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Nombres"/>
+                    </f:facet>
+                    <h:outputLabel value="#{propietario.nombres}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Direccion"/>
+                    </f:facet>
+                    <h:outputLabel value="#{propietario.direccion}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Telefono"/>
+                    </f:facet>
+                    <h:outputLabel value="#{propietario.telefono}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Eliminar" actionListener="#{gestionarPropietario.eliminar(propietario)}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Modificar" action="#{gestionarPropietario.redireccionarModificar(propietario)}"/>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton value="Panel Control" actionListener="#{gestionarPropietario.irPanelControl()}"/>
         </h:form>
     </h:body>
 </html>

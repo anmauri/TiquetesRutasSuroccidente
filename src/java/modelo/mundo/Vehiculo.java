@@ -11,7 +11,7 @@ import modelo.datos.TiqueteDAO;
  * clase encargada del manejo de informacion del vehiculo
  * @author megasoft
  * Universidad Mariana (Pasto - Colombia) 
- * Departamento de Ingeniería de Sistemas. 
+ * Departamento de Ingenierï¿½a de Sistemas. 
  */
 public class Vehiculo {
 	
@@ -89,6 +89,9 @@ public class Vehiculo {
 		this.numeroPasajeros=nNumeroPasajeros;
 		this.placa=nPlaca;
 		this.tiquetes= new Tiquete[this.numeroPasajeros];
+                this.propietarioDAO=new PropietarioDAO();
+                this.rutaTurnoDAO= new RutaTurnoDAO();
+                this.tiqueteDAO= new TiqueteDAO();
 		// TODO Auto-generated constructor stub
 	}
 	
