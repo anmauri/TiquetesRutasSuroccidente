@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import modelo.mundo.Linea;
 import modelo.mundo.Marca;
@@ -21,7 +23,7 @@ public class LineaDAO {
 	/**
 	 * Atributo encargado de enlazar la clase FachadaDB
 	 */
-	private FachadaDB fachadaDB;
+	private FachadaDB fachada;
 	
 	
 	/**
@@ -38,23 +40,39 @@ public class LineaDAO {
 	 * @return
 	 */
 	public ArrayList<Linea> seleccionar(Marca nMarca)throws ClassNotFoundException, SQLException{
-              ArrayList<Linea> retorno= new ArrayList<Linea>();
-		String seleccionar="select  consumo.fecha, consumo.habitacion_numero, consumo.producto, consumo.valor from consumo, habitacion where habitacion.numero="+habitacionSeleccionar.darNumero()+" and consumo.habitacion_numero= habitacion.numero order by consumo.fecha desc";
-                Connection conexion = fachadaDB.conectarDB();
-		if(conexion!=null)
+            ArrayList<Linea> Lineas;
+                Lineas = new ArrayList();
+		String seleccionar="select marca.nombre from marca";
+		Connection conexion;
+            try {
+                conexion = fachada.conectarDB();
+                if(conexion!=null)
 		{
-			Statement instruccion = (Statement)conexion.createStatement();
-			ResultSet resultado=(ResultSet)instruccion.executeQuery(seleccionar);
-			while(resultado.next())
+			Statement instruccion;
+                    try {
+                        instruccion = (Statement) conexion.createStatement();
+                        ResultSet resultado = null;
+			resultado = (ResultSet) instruccion.executeQuery(seleccionar);
+			while (resultado.next()) 
 			{
-				String nombreLinea =resultado.getString("nombre");
-				SimpleDateFormat formato= new SimpleDateFormat(Tiquete.FORMATO);
-				Linea linea= new Linea(nombreLinea);
-				retorno.add(linea);
+				
+				String nNombre = resultado.getString("linea.nombre");
+                                Linea linea = new Linea(nNombre);
+                               Lineas.add(linea);
+
 			}
-			conexion.close();
+			fachada.desconectarDB(conexion);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+			
 		}
-		return retorno;
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		return Lineas;
 	
 	}
 	
@@ -66,14 +84,30 @@ public class LineaDAO {
          * @param vNombre 
 	 */
 	public void actualizar(Marca nMarca, Linea nLinea, String vNombre)throws ClassNotFoundException, SQLException{
-            String actualizar= "call actualizar_linea("+nMarca.getNombre()+", " + nLinea.getNombre()+ ", " +vNombre")";
-		Connection conexion= fachadaDB.conectarDB();
-		if(conexion!=null)
+            String actualizar= "update linea "
+                                    + "set marca.nombre = " + nMarca.getNombre() + ", linea.nombre = " + nLinea.getNombre()  
+                                    + " where " + nLinea.getNombre()+" = vNombre"
+                                    + " and " + nMarca.getNombre() + " = linea.marca_nombre";
+		Connection conexion;
+            try {
+                conexion = fachada.conectarDB();
+                if(conexion!=null)
 		{
-			Statement instruccion= (Statement) conexion.createStatement();
-			instruccion.executeUpdate(actualizar);
-			fachadaDB.desconectarDB(conexion);
+			Statement instruccion;
+                    try {
+                        instruccion = (Statement) conexion.createStatement();
+                        instruccion.executeUpdate(actualizar);
+			fachada.desconectarDB(conexion);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+			
 		}
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
 	
 	}
 	
@@ -84,15 +118,29 @@ public class LineaDAO {
 	 * @param nLinea
 	 * @param nVehiculo
 	 */
-	public void agregar(Marca nMarca, Linea nLinea) throws ClassNotFoundException, SQLException{
-            Connection conexion= fachadaDB.conectarDB();
-            String agregar= "call agregar_linea (" + nMarca.getNombre() + "', " + nLinea.getNombre() + ")";
-            if(conexion!=null)
-            {
-                    Statement instruccion=(Statement)conexion.createStatement();
-                    instruccion.execute(agregar);
-                    conexion.close();
-            }	
+	public void agregar(Marca nMarca, Linea nLinea, Vehiculo nVehiculo) throws ClassNotFoundException, SQLException{
+            String agregar= "insert into vehiculo (vehiculo.placa, vehiculo.modelo, vehiculo.numero_pasajeros, vehiculo.fotografia, vehiculo.linea_nombre,linea.Marca_nombre) "
+                                + "values ( " + nVehiculo.getPlaca() + ", " + nVehiculo.getModelo() + ", " + nVehiculo.getNumeroPasajeros() + ", " + nVehiculo.getFotografia() + ", " + nLinea.getNombre() + " ,"+ nMarca.getNombre()+");";
+		Connection conexion;
+            try {
+                conexion = fachada.conectarDB();
+                if(conexion!=null)
+		{
+			Statement instruccion;
+                    try {
+                        instruccion = (Statement) conexion.createStatement();
+                        instruccion.executeUpdate(agregar);
+			fachada.desconectarDB(conexion);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+			
+		}
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
 		
 	}
 	
@@ -104,13 +152,27 @@ public class LineaDAO {
 	 * @param nVehiculo
 	 */
 	public void eliminar(Marca nMarca, Linea nLinea) throws ClassNotFoundException, SQLException{
-		Connection conexion= fachadaDB.conectarDB();
-            String eliminar= "call eliminar_linea (" + nMarca.getNombre() + "," + nLinea.getNombre()+")";
-            if(conexion!=null)
-            {
-                    Statement instruccion=(Statement)conexion.createStatement();
-                    instruccion.execute(eliminar);
-                    conexion.close();
+		String eliminar= "delete from linea "
+                                + "where linea.nombre = " + nLinea.getNombre() + ";";
+		Connection conexion;
+            try {
+                conexion = fachada.conectarDB();
+                if(conexion!=null)
+		{
+			Statement instruccion;
+                    try {
+                        instruccion = (Statement) conexion.createStatement();
+                        instruccion.executeUpdate(eliminar);
+			fachada.desconectarDB(conexion);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+			
+		}
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LineaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
 	}
 }
